@@ -1,8 +1,14 @@
 import React, { FormEvent, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ThemeName } from '../../styles/themes';
 import { Container, GitHubLogo, SearchForm } from './styles';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  themeName: ThemeName;
+  setThemeName(newName: ThemeName): void;
+}
+
+const Header: React.FC<HeaderProps> = ({ themeName, setThemeName }) => {
   const [search, setSearch] = useState('');
 
   const navigate = useNavigate();
@@ -16,9 +22,13 @@ const Header: React.FC = () => {
     [navigate, search],
   );
 
+  const toggleTheme = useCallback(() => {
+    setThemeName(themeName === 'light' ? 'dark' : 'light');
+  }, [setThemeName, themeName]);
+
   return (
     <Container>
-      <GitHubLogo />
+      <GitHubLogo onClick={toggleTheme} />
 
       <SearchForm onSubmit={handleSubmit}>
         <input
